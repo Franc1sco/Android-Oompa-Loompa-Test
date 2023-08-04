@@ -1,4 +1,4 @@
-package franug.oompaloompatest.presenter
+package franug.oompaloompatest.presenter.interfaces
 
 import android.app.Activity
 

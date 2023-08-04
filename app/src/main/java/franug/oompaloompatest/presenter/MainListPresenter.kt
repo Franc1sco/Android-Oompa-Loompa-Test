@@ -1,19 +1,17 @@
 package franug.oompaloompatest.presenter
 
 import android.app.Activity
+import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
+import franug.oompaloompatest.retrofit.RetrofitClient
+import franug.oompaloompatest.view.interfaces.IMainListActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainListPresenter : IMainListPresenter {
     private var view: IMainListActivity? = null
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://2q2woep105.execute-api.eu-west-1.amazonaws.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val apiService = retrofit.create(ApiService::class.java)
 
     // metodo que se llama cuando se crea el presenter y se le pasa la vista
     override fun attachView(view: Activity) {
@@ -25,10 +23,20 @@ class MainListPresenter : IMainListPresenter {
         this.view = null
     }
 
-    override suspend fun getList(userId: Int) {
-        val list = apiService.getOompaLoompas(1)
-        withContext(Dispatchers.Main) {
-            view?.applyList(list)
+    override fun getList(page: Int) {
+        val apiService = RetrofitClient.create()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val oompaLoompas = apiService.getOompaLoompas(page)
+                withContext(Dispatchers.Main) {
+                    view?.showList(oompaLoompas.results)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    view?.showError()
+                }
+            }
         }
     }
 }

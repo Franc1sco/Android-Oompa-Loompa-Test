@@ -1,27 +1,26 @@
 package franug.oompaloompatest.view
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import androidx.lifecycle.lifecycleScope
+import android.widget.AdapterView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import franug.oompaloompatest.adapter.GameAdapter
+import franug.oompaloompatest.adapter.OompaLoompaAdapter
 import franug.oompaloompatest.databinding.ActivityMainBinding
-import franug.oompaloompatest.model.ApiResponse
 import franug.oompaloompatest.model.OompaLoompa
-import franug.oompaloompatest.presenter.IMainListActivity
-import franug.oompaloompatest.presenter.IMainListPresenter
+import franug.oompaloompatest.view.interfaces.IMainListActivity
+import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.presenter.MainListPresenter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 class MainActivity : AppCompatActivity(), IMainListActivity {
 
     private lateinit var binding: ActivityMainBinding
     private var listDataAdapter = ArrayList<OompaLoompa>()
-    private var adapter: GameAdapter? = null
+    private var adapter: OompaLoompaAdapter? = null
     private var presenter: IMainListPresenter = MainListPresenter()
+    private var currentPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +36,19 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         )
 
         showLoadingScreen(true)
-        lifecycleScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                presenter.getList(1)
-            }
-        }.invokeOnCompletion {
-            showLoadingScreen(false)
+        presenter.getList(currentPage)
+
+        binding.ivOrderNext.setOnClickListener {
+            showLoadingScreen(true)
+            presenter.getList(++currentPage)
+            binding.ivCurrentPage.text = currentPage.toString()
+            if (currentPage > 1) binding.ivOrderPrevious.visibility = View.VISIBLE
+        }
+        binding.ivOrderPrevious.setOnClickListener {
+            showLoadingScreen(true)
+            presenter.getList(--currentPage)
+            binding.ivCurrentPage.text = currentPage.toString()
+            if (currentPage == 1) binding.ivOrderPrevious.visibility = View.GONE
         }
     }
 
@@ -58,11 +64,24 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         }
     }
 
-    override fun applyList(gameList: ApiResponse) {
-        binding.recyclerView.setHasFixedSize(true)
+    override fun showList(loompaList: Array<OompaLoompa>) {
+        showLoadingScreen(false)
+        //binding.recyclerView.setHasFixedSize(true)
         listDataAdapter.clear()
-        listDataAdapter.addAll(gameList.results)
-        adapter = GameAdapter(listDataAdapter, context = this)
+        listDataAdapter.addAll(loompaList)
+        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.setOnClickListener {
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                Toast.makeText(this, "Item con nombre ${loompaList[position].first_name}", Toast.LENGTH_SHORT).show()
+            }
+        }
+        // mover el scroll al principio
+        binding.recyclerView.scrollToPosition(0)
+    }
+
+    override fun showError() {
+        showLoadingScreen(false)
+        Toast.makeText(this, "Error al cargar la lista", Toast.LENGTH_SHORT).show()
     }
 }
