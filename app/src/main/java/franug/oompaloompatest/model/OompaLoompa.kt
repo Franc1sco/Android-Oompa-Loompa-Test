@@ -5,7 +5,14 @@ data class OompaLoompa(
     val last_name: String,
     val image: String,
     val id: Int,
-    val favorite: Favorite
+    val favorite: Favorite,
+    val profession: String,
+    val email: String,
+    val age: Int,
+    val country: String,
+    val height: Int,
+    val gender: String,
+
 )
 
 data class Favorite(

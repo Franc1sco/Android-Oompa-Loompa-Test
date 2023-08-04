@@ -32,11 +32,19 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
 
     override fun showDetails(oompaLoompa: OompaLoompa) {
         binding.nameTextView.text = oompaLoompa.first_name + " " + oompaLoompa.last_name
-        binding.tvColorViewInfo.text = oompaLoompa.favorite.color
-        binding.tvFoodViewInfo.text = oompaLoompa.favorite.food
-        binding.expandTv.text = oompaLoompa.favorite.song
-        if (oompaLoompa.image.isNullOrEmpty().not()) Glide.with(this).load(oompaLoompa.image).into(binding.profileImageView)
+        binding.professionTextView.text = "Profesión: " + oompaLoompa.profession
+        binding.emailTextView.text = "Email: " + oompaLoompa.email
+        binding.ageTextView.text = "Edad: " + oompaLoompa.age.toString()
+        binding.countryTextView.text = "País: " + oompaLoompa.country
+        binding.heightTextView.text = "Altura: " + oompaLoompa.height.toString()
+        binding.colorTextView.text = "Color favorito: " + oompaLoompa.favorite.color
+        binding.foodTextView.text = "Comida favorita: " + oompaLoompa.favorite.food
+        binding.songLyricsTextView.text = "Letra de canción favorita:\n" + oompaLoompa.favorite.song
+        binding.genderTextView.text = "Género: " + oompaLoompa.gender
+        Glide.with(this).load(oompaLoompa.image).into(binding.profileImageView)
         showLoadingScreen(false)
+
+
     }
 
     override fun showError() {
