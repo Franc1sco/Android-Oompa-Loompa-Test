@@ -3,10 +3,9 @@ package franug.oompaloompatest
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 
 open class AndroidApplication : Application() {
-
-    var connected: Boolean = false
 
     companion object {
         private var instance: AndroidApplication? = null
@@ -37,9 +36,16 @@ open class AndroidApplication : Application() {
         val cm = applicationContext
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        val activeNetwork = cm.activeNetworkInfo
-        connected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
-        return connected
+        val networkCapabilities = cm.activeNetwork ?: return false
+        val actNw =
+            cm.getNetworkCapabilities(networkCapabilities) ?: return false
+        val result = when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+        return result
     }
 
 }

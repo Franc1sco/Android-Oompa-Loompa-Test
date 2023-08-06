@@ -1,17 +1,11 @@
 package franug.oompaloompatest.view
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import franug.oompaloompatest.AndroidApplication
 import franug.oompaloompatest.R
 import franug.oompaloompatest.adapter.OompaLoompaAdapter
 import franug.oompaloompatest.databinding.ActivityMainBinding
@@ -19,7 +13,6 @@ import franug.oompaloompatest.model.OompaLoompa
 import franug.oompaloompatest.view.interfaces.IMainListActivity
 import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.presenter.MainListPresenter
-import franug.oompaloompatest.utils.ConnectivityReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -35,14 +28,6 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val intentFilter = IntentFilter(ConnectivityReceiver.NETWORK_AVAILABLE_ACTION)
-        LocalBroadcastManager.getInstance(this).registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val isConnected = intent.getBooleanExtra(ConnectivityReceiver.IS_NETWORK_AVAILABLE, false)
-                AndroidApplication.getInstance?.connected = isConnected
-            }
-        }, intentFilter)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -53,6 +38,7 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
             LinearLayoutManager.VERTICAL, false
         )
 
+        setPageViews()
         showLoadingScreen(true)
         lifecycleScope.launch(Dispatchers.IO) {
             presenter.getList(currentPage)
@@ -63,16 +49,12 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
             lifecycleScope.launch(Dispatchers.IO) {
                 presenter.getList(++currentPage)
             }
-            binding.tvCurrentPage.text = currentPage.toString()
-            if (currentPage > 1) binding.ivOrderPrevious.visibility = View.VISIBLE
         }
         binding.ivOrderPrevious.setOnClickListener {
             showLoadingScreen(true)
             lifecycleScope.launch(Dispatchers.IO) {
                 presenter.getList(--currentPage)
             }
-            binding.tvCurrentPage.text = currentPage.toString()
-            if (currentPage == 1) binding.ivOrderPrevious.visibility = View.GONE
         }
     }
 
@@ -89,16 +71,29 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
     }
 
     override fun showList(loompaList: Array<OompaLoompa>) {
-        showLoadingScreen(false)
         listDataAdapter.clear()
         listDataAdapter.addAll(loompaList)
         adapter = OompaLoompaAdapter(listDataAdapter, context = this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.scrollToPosition(0)
+        setPageViews()
+        showLoadingScreen(false)
     }
 
-    override fun showError() {
+    private fun setPageViews() {
+        binding.tvCurrentPage.text = currentPage.toString()
+        if (currentPage > 1) binding.ivOrderPrevious.visibility = View.VISIBLE
+        else binding.ivOrderPrevious.visibility = View.GONE
+    }
+
+    override fun showError()
+    {
+        listDataAdapter.clear()
+        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.scrollToPosition(0)
         showLoadingScreen(false)
+        setPageViews()
         Toast.makeText(this, getString(R.string.load_error), Toast.LENGTH_SHORT).show()
     }
 }
