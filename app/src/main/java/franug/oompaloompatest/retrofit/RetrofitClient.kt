@@ -1,9 +1,9 @@
 package franug.oompaloompatest.retrofit
 
 import android.content.Context
-import franug.oompaloompatest.model.CachingOfflineInterceptor
-import franug.oompaloompatest.model.CachingOnlineInterceptor
-import franug.oompaloompatest.model.interfaces.ApiService
+import franug.oompaloompatest.utils.CachingOfflineInterceptor
+import franug.oompaloompatest.utils.CachingOnlineInterceptor
+import franug.oompaloompatest.retrofit.interfaces.ApiService
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

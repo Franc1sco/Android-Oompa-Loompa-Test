@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import franug.oompaloompatest.databinding.ItemMainScreenAdapterBinding
@@ -15,7 +14,6 @@ import franug.oompaloompatest.view.DetailActivity
 class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private var context: Context) :
     RecyclerView.Adapter<OompaLoompaAdapter.ViewHolderData>() {
 
-    // el metodo onCreateViewHolder es el que se ejecuta cuando se crea un nuevo viewholder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderData {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemListBinding: ItemMainScreenAdapterBinding =
@@ -23,11 +21,11 @@ class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private v
         return ViewHolderData(itemListBinding)
     }
 
-    // el metodo onBindViewHolder es el que se ejecuta cuando se carga un viewholder y es donde se cargan los datos
     override fun onBindViewHolder(holder: ViewHolderData, position: Int) {
         val oompaLoompa: OompaLoompa = listData[position]
-        holder.itemListBinding.tvName.text = oompaLoompa.first_name
-        holder.itemListBinding.tvStatus.text = oompaLoompa.last_name
+        holder.itemListBinding.tvName.text = oompaLoompa.first_name + " " + oompaLoompa.last_name
+        holder.itemListBinding.tvProfession.text = "Profesión: " + oompaLoompa.profession
+        holder.itemListBinding.tvGender.text = "Género: " + oompaLoompa.gender
         if (oompaLoompa.image.isNullOrEmpty().not()) Glide.with(context).load(oompaLoompa.image).into(holder.itemListBinding.ivGameImage)
 
         holder.itemView.setOnClickListener { view ->
@@ -39,12 +37,10 @@ class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private v
         }
     }
 
-    // el metodo getItemCount es el que se ejecuta cuando se necesita saber la cantidad de elementos que tiene el recyclerView
     override fun getItemCount(): Int {
         return listData.size
     }
 
-    // el xml que le cargamos a la vista
     class ViewHolderData(var itemListBinding: ItemMainScreenAdapterBinding) :
         RecyclerView.ViewHolder(itemListBinding.root) {
     }

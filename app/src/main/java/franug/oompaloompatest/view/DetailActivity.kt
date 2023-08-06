@@ -2,11 +2,13 @@ package franug.oompaloompatest.view
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -17,6 +19,7 @@ import franug.oompaloompatest.presenter.DetailPresenter
 import franug.oompaloompatest.presenter.interfaces.IDetailPresenter
 import franug.oompaloompatest.utils.ConnectivityReceiver
 import franug.oompaloompatest.view.interfaces.IDetailActivity
+
 
 class DetailActivity: AppCompatActivity(), IDetailActivity {
 
@@ -53,10 +56,19 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
         binding.heightTextView.text = "Altura: " + oompaLoompa.height.toString()
         binding.colorTextView.text = "Color favorito: " + oompaLoompa.favorite.color
         binding.foodTextView.text = "Comida favorita: " + oompaLoompa.favorite.food
-        binding.songLyricsTextView.text = "Letra de canción favorita:\n" + oompaLoompa.favorite.song
         binding.genderTextView.text = "Género: " + oompaLoompa.gender
         Glide.with(this).load(oompaLoompa.image).into(binding.profileImageView)
         showLoadingScreen(false)
+        binding.songLyricsTextViewShow.setOnClickListener {
+            // show dialog
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Letra de canción favorita")
+            builder.setMessage(oompaLoompa.favorite.song)
+            builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.show()
+        }
 
 
     }
@@ -69,10 +81,10 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
     private fun showLoadingScreen(visibleLoading: Boolean) {
         if (visibleLoading) {
             binding.progressBar.visibility = View.VISIBLE
-            binding.llContent.visibility = View.GONE
+            binding.clContent.visibility = View.GONE
         } else {
             binding.progressBar.visibility = View.GONE
-            binding.llContent.visibility = View.VISIBLE
+            binding.clContent.visibility = View.VISIBLE
         }
     }
 }

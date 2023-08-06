@@ -29,12 +29,10 @@ class DetailPresenter: IDetailPresenter {
         }
     }
 
-    // metodo que se llama cuando se crea el presenter y se le pasa la vista
     override fun attachView(view: Activity) {
         this.view = view as IDetailActivity
     }
 
-    // metodo que se llama cuando se destruye el presenter y se limpia la vista
     override fun detachView() {
         this.view = null
     }
