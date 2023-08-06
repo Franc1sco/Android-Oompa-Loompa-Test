@@ -1,17 +1,24 @@
 package franug.oompaloompatest.view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import franug.oompaloompatest.AndroidApplication
 import franug.oompaloompatest.adapter.OompaLoompaAdapter
 import franug.oompaloompatest.databinding.ActivityMainBinding
 import franug.oompaloompatest.model.OompaLoompa
 import franug.oompaloompatest.view.interfaces.IMainListActivity
 import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.presenter.MainListPresenter
+import franug.oompaloompatest.utils.ConnectivityReceiver
 
 
 class MainActivity : AppCompatActivity(), IMainListActivity {
@@ -24,6 +31,14 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val intentFilter = IntentFilter(ConnectivityReceiver.NETWORK_AVAILABLE_ACTION)
+        LocalBroadcastManager.getInstance(this).registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val isConnected = intent.getBooleanExtra(ConnectivityReceiver.IS_NETWORK_AVAILABLE, false)
+                AndroidApplication.getInstance?.connected = isConnected
+            }
+        }, intentFilter)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

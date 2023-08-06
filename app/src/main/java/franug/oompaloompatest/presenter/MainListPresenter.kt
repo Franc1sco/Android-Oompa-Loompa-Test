@@ -24,7 +24,7 @@ class MainListPresenter : IMainListPresenter {
     }
 
     override fun getList(page: Int) {
-        val apiService = RetrofitClient.create()
+        val apiService = RetrofitClient.create(context = view as Activity)
 
         GlobalScope.launch(Dispatchers.IO) {
             try {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 class DetailPresenter: IDetailPresenter {
     private var view: IDetailActivity? = null
     override fun getDetails(id: Int) {
-        val apiService = RetrofitClient.create()
+        val apiService = RetrofitClient.create(context = view as Activity)
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
