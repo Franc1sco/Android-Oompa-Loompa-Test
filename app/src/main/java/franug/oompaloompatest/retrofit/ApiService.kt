@@ -1,4 +1,4 @@
-package franug.oompaloompatest.retrofit.interfaces
+package franug.oompaloompatest.retrofit
 
 import franug.oompaloompatest.model.ApiResponse
 import franug.oompaloompatest.model.OompaLoompa

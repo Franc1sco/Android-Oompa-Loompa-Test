@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import franug.oompaloompatest.R
 import franug.oompaloompatest.databinding.ItemMainScreenAdapterBinding
 import franug.oompaloompatest.model.OompaLoompa
 import franug.oompaloompatest.view.DetailActivity
@@ -23,17 +24,18 @@ class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private v
 
     override fun onBindViewHolder(holder: ViewHolderData, position: Int) {
         val oompaLoompa: OompaLoompa = listData[position]
-        holder.itemListBinding.tvName.text = oompaLoompa.first_name + " " + oompaLoompa.last_name
-        holder.itemListBinding.tvProfession.text = "Profesión: " + oompaLoompa.profession
-        holder.itemListBinding.tvGender.text = "Género: " + oompaLoompa.gender
-        if (oompaLoompa.image.isNullOrEmpty().not()) Glide.with(context).load(oompaLoompa.image).into(holder.itemListBinding.ivGameImage)
+        val name = oompaLoompa.firstName + " " + oompaLoompa.lastName
+        holder.itemListBinding.tvName.text = name
+        holder.itemListBinding.tvProfession.text = context.getString(R.string.profession, oompaLoompa.profession)
+        holder.itemListBinding.tvGender.text = context.getString(R.string.gender, oompaLoompa.gender)
+        if (oompaLoompa.image.isNullOrEmpty().not()) {
+            Glide.with(context).load(oompaLoompa.image).into(holder.itemListBinding.ivGameImage)
+        }
 
-        holder.itemView.setOnClickListener { view ->
-            // iniciar la actividad de DetailActivity pasarle el id del oompaLoompa
+        holder.itemView.setOnClickListener { _ ->
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra("ID", oompaLoompa.id)
             context.startActivity(intent)
-            //Toast.makeText(context, "Clicked on item ${oompaLoompa.first_name}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -41,8 +43,5 @@ class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private v
         return listData.size
     }
 
-    class ViewHolderData(var itemListBinding: ItemMainScreenAdapterBinding) :
-        RecyclerView.ViewHolder(itemListBinding.root) {
-    }
-
+    class ViewHolderData(var itemListBinding: ItemMainScreenAdapterBinding) : RecyclerView.ViewHolder(itemListBinding.root)
 }

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Oompa Loompa Test</string>
+    <string name="profession">Profession: %1$s</string>
+    <string name="age">Age: %1$d</string>
+    <string name="height">Height: %1$d</string>
+    <string name="country">Country: %1$s</string>
+    <string name="email">Email: %1$s</string>
+    <string name="favorite_color">Favorite color: %1$s</string>
+    <string name="favorite_food">Favorite food: %1$s</string>
+    <string name="favorite_song">Favorite song lyrics:</string>
+    <string name="gender">Gender: %1$s</string>
+    <string name="load_error">Error on loading the list</string>
+    <string name="pageTitle">Page:</string>
+    <string name="show">Show</string>
 </resources>

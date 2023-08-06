@@ -58,7 +58,12 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
-    implementation("io.github.glailton.expandabletextview:expandabletextview:1.0.4")
-
+    // add mockito dependencies
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito:mockito-inline:3.12.4")
+    testImplementation("org.mockito:mockito-android:3.12.4")
+    // corroutine test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("io.mockk:mockk:1.12.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
 }

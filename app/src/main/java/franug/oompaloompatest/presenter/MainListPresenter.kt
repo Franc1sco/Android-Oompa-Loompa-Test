@@ -5,8 +5,6 @@ import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.retrofit.RetrofitClient
 import franug.oompaloompatest.view.interfaces.IMainListActivity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -21,19 +19,16 @@ class MainListPresenter : IMainListPresenter {
         this.view = null
     }
 
-    override fun getList(page: Int) {
-        val apiService = RetrofitClient.create(context = view as Activity)
-
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val oompaLoompas = apiService.getOompaLoompas(page)
-                withContext(Dispatchers.Main) {
-                    view?.showList(oompaLoompas.results)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    view?.showError()
-                }
+    override suspend fun getList(page: Int) {
+        try {
+            val apiService = RetrofitClient.create(view as Activity)
+            val oompaLoompas = apiService.getOompaLoompas(page)
+            withContext(Dispatchers.Main) {
+                oompaLoompas.results?.let { view?.showList(it) } ?: view?.showError()
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                view?.showError()
             }
         }
     }

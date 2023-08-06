@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Oompa Loompa Test</string>
+    <string name="profession">Profesión: %1$s</string>
+    <string name="age">Edad: %1$d</string>
+    <string name="height">Altura: %1$d</string>
+    <string name="country">País: %1$s</string>
+    <string name="email">Email: %1$s</string>
+    <string name="favorite_color">Color favorito: %1$s</string>
+    <string name="favorite_food">Comida favorita: %1$s</string>
+    <string name="favorite_song">Letra de canción favorita:</string>
+    <string name="gender">Género: %1$s</string>
+    <string name="load_error">Error al cargar la lista</string>
+    <string name="pageTitle">Página:</string>
+    <string name="show">Mostrar</string>
+</resources>
