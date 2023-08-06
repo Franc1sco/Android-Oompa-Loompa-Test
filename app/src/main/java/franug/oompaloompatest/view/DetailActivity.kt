@@ -29,6 +29,9 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
         setContentView(binding.root)
 
         presenter.attachView(this)
+
+        binding.ivBack.setOnClickListener { finish() }
+
         val id = intent.getIntExtra("ID", 0)
         showLoadingScreen(true)
         lifecycleScope.launch(Dispatchers.IO) {
