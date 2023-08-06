@@ -58,6 +58,11 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
     private fun showLoadingScreen(visibleLoading: Boolean) {
         if (visibleLoading) {
             binding.progressBar.visibility = View.VISIBLE

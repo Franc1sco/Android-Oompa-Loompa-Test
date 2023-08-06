@@ -40,6 +40,11 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
     override fun showDetails(oompaLoompa: OompaLoompa) {
         val name = oompaLoompa.firstName + " " + oompaLoompa.lastName
         binding.tvName.text = name
