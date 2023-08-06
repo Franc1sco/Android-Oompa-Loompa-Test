@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity(), IMainListActivity {
+class MainListActivity : AppCompatActivity(), IMainListActivity {
 
     private lateinit var binding: ActivityMainBinding
     private var listDataAdapter = ArrayList<OompaLoompa>()
@@ -63,6 +63,27 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         presenter.detachView()
     }
 
+    override fun showList(loompaList: Array<OompaLoompa>) {
+        listDataAdapter.clear()
+        listDataAdapter.addAll(loompaList)
+        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.scrollToPosition(0)
+        setPageViews()
+        showLoadingScreen(false)
+    }
+
+    override fun showError()
+    {
+        listDataAdapter.clear()
+        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.scrollToPosition(0)
+        showLoadingScreen(false)
+        setPageViews()
+        Toast.makeText(this, getString(R.string.load_error), Toast.LENGTH_SHORT).show()
+    }
+
     private fun showLoadingScreen(visibleLoading: Boolean) {
         if (visibleLoading) {
             binding.progressBar.visibility = View.VISIBLE
@@ -75,30 +96,9 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         }
     }
 
-    override fun showList(loompaList: Array<OompaLoompa>) {
-        listDataAdapter.clear()
-        listDataAdapter.addAll(loompaList)
-        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.scrollToPosition(0)
-        setPageViews()
-        showLoadingScreen(false)
-    }
-
     private fun setPageViews() {
         binding.tvCurrentPage.text = currentPage.toString()
         if (currentPage > 1) binding.ivOrderPrevious.visibility = View.VISIBLE
         else binding.ivOrderPrevious.visibility = View.GONE
-    }
-
-    override fun showError()
-    {
-        listDataAdapter.clear()
-        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.scrollToPosition(0)
-        showLoadingScreen(false)
-        setPageViews()
-        Toast.makeText(this, getString(R.string.load_error), Toast.LENGTH_SHORT).show()
     }
 }

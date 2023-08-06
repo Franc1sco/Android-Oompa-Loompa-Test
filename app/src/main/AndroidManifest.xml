@@ -8,9 +8,10 @@
     <application
         android:name=".AndroidApplication"
         android:label="@string/app_name"
-        android:theme="@style/Base.Theme.OompaLoompaTest">
+        android:theme="@style/Base.Theme.OompaLoompaTest"
+        android:icon="@mipmap/ic_launcher">
         <activity
-            android:name="franug.oompaloompatest.view.MainActivity"
+            android:name="franug.oompaloompatest.view.MainListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

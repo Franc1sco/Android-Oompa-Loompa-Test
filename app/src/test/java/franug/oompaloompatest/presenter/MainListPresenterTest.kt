@@ -1,6 +1,6 @@
 package franug.oompaloompatest.presenter
 
-import franug.oompaloompatest.view.MainActivity
+import franug.oompaloompatest.view.MainListActivity
 import io.mockk.MockKAnnotations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class MainListPresenterTest {
-    private var mockView = mock(MainActivity::class.java)
+    private var mockView = mock(MainListActivity::class.java)
 
     private var presenter = MainListPresenter()
 
