@@ -2,7 +2,6 @@ package franug.oompaloompatest.view
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import franug.oompaloompatest.AndroidApplication
@@ -19,6 +19,8 @@ import franug.oompaloompatest.presenter.DetailPresenter
 import franug.oompaloompatest.presenter.interfaces.IDetailPresenter
 import franug.oompaloompatest.utils.ConnectivityReceiver
 import franug.oompaloompatest.view.interfaces.IDetailActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class DetailActivity: AppCompatActivity(), IDetailActivity {
@@ -43,7 +45,9 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
         presenter.attachView(this)
         val id = intent.getIntExtra("ID", 0)
         showLoadingScreen(true)
-        presenter.getDetails(id)
+        lifecycleScope.launch(Dispatchers.IO) {
+            presenter.getDetails(id)
+        }
 
     }
 
@@ -54,8 +58,8 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
         binding.ageTextView.text = "Edad: " + oompaLoompa.age.toString()
         binding.countryTextView.text = "País: " + oompaLoompa.country
         binding.heightTextView.text = "Altura: " + oompaLoompa.height.toString()
-        binding.colorTextView.text = "Color favorito: " + oompaLoompa.favorite.color
-        binding.foodTextView.text = "Comida favorita: " + oompaLoompa.favorite.food
+        binding.colorTextView.text = "Color favorito: " + oompaLoompa.favorite?.color
+        binding.foodTextView.text = "Comida favorita: " + oompaLoompa.favorite?.food
         binding.genderTextView.text = "Género: " + oompaLoompa.gender
         Glide.with(this).load(oompaLoompa.image).into(binding.profileImageView)
         showLoadingScreen(false)
@@ -63,7 +67,7 @@ class DetailActivity: AppCompatActivity(), IDetailActivity {
             // show dialog
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Letra de canción favorita")
-            builder.setMessage(oompaLoompa.favorite.song)
+            builder.setMessage(oompaLoompa.favorite?.song)
             builder.setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
             }

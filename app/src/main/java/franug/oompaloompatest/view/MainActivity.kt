@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import franug.oompaloompatest.AndroidApplication
@@ -19,6 +20,8 @@ import franug.oompaloompatest.view.interfaces.IMainListActivity
 import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.presenter.MainListPresenter
 import franug.oompaloompatest.utils.ConnectivityReceiver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), IMainListActivity {
@@ -51,17 +54,23 @@ class MainActivity : AppCompatActivity(), IMainListActivity {
         )
 
         showLoadingScreen(true)
-        presenter.getList(currentPage)
+        lifecycleScope.launch(Dispatchers.IO) {
+            presenter.getList(currentPage)
+        }
 
         binding.ivOrderNext.setOnClickListener {
             showLoadingScreen(true)
-            presenter.getList(++currentPage)
+            lifecycleScope.launch(Dispatchers.IO) {
+                presenter.getList(++currentPage)
+            }
             binding.ivCurrentPage.text = currentPage.toString()
             if (currentPage > 1) binding.ivOrderPrevious.visibility = View.VISIBLE
         }
         binding.ivOrderPrevious.setOnClickListener {
             showLoadingScreen(true)
-            presenter.getList(--currentPage)
+            lifecycleScope.launch(Dispatchers.IO) {
+                presenter.getList(--currentPage)
+            }
             binding.ivCurrentPage.text = currentPage.toString()
             if (currentPage == 1) binding.ivOrderPrevious.visibility = View.GONE
         }

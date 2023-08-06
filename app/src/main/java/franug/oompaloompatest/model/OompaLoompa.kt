@@ -1,22 +1,23 @@
 package franug.oompaloompatest.model
 
 data class OompaLoompa(
-    val first_name: String,
-    val last_name: String,
-    val image: String,
-    val id: Int,
-    val favorite: Favorite,
-    val profession: String,
-    val email: String,
-    val age: Int,
-    val country: String,
-    val height: Int,
-    val gender: String,
+    val first_name: String? = null,
+    val last_name: String? = null,
+    val image: String? = null,
+    val id: Int? = null,
+    val favorite: Favorite? = null,
+    val profession: String? = null,
+    val email: String? = null,
+    val age: Int? = null,
+    val country: String? = null,
+    val height: Int? = null,
+    val gender: String? = null,
 
 )
 
 data class Favorite(
-    val color: String,
-    val food: String,
-    val random_string: String,
-    val song: String)
+    val color: String? = null,
+    val food: String? = null,
+    val random_string: String? = null,
+    val song: String? = null
+)

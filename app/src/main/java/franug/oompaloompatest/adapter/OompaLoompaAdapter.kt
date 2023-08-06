@@ -26,7 +26,9 @@ class OompaLoompaAdapter(private var listData: ArrayList<OompaLoompa>, private v
         holder.itemListBinding.tvName.text = oompaLoompa.first_name + " " + oompaLoompa.last_name
         holder.itemListBinding.tvProfession.text = "Profesión: " + oompaLoompa.profession
         holder.itemListBinding.tvGender.text = "Género: " + oompaLoompa.gender
-        if (oompaLoompa.image.isNullOrEmpty().not()) Glide.with(context).load(oompaLoompa.image).into(holder.itemListBinding.ivGameImage)
+        if (oompaLoompa.image.isNullOrEmpty().not()) {
+            Glide.with(context).load(oompaLoompa.image).into(holder.itemListBinding.ivGameImage)
+        }
 
         holder.itemView.setOnClickListener { view ->
             // iniciar la actividad de DetailActivity pasarle el id del oompaLoompa
