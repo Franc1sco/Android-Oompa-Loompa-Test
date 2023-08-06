@@ -1,6 +1,6 @@
 package franug.oompaloompatest.presenter
 
-import franug.oompaloompatest.view.MainActivity
+import franug.oompaloompatest.view.DetailActivity
 import io.mockk.MockKAnnotations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -10,22 +10,19 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(MockitoJUnitRunner::class)
-class MainListPresenterTest {
-    private var mockView = mock(MainActivity::class.java)
+class DetailPresenterTest {
+    private var mockView = mock(DetailActivity::class.java)
 
-    private var presenter = MainListPresenter()
+    private lateinit var presenter: DetailPresenter
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
+        presenter = DetailPresenter()
         presenter.attachView(mockView)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
@@ -38,10 +35,9 @@ class MainListPresenterTest {
     @Test
     fun `should showError`() {
         runBlocking {
-            presenter.getList(1)
+            presenter.getDetails(1)
         }.run {
             verify(mockView).showError()
         }
     }
-
 }

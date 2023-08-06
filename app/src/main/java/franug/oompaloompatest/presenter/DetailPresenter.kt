@@ -10,9 +10,8 @@ import kotlinx.coroutines.withContext
 class DetailPresenter: IDetailPresenter {
     private var view: IDetailActivity? = null
     override suspend fun getDetails(id: Int) {
-        val apiService = RetrofitClient.create(context = view as Activity)
-
         try {
+            val apiService = RetrofitClient.create(context = view as Activity)
             val oompaLoompas = apiService.getOompaLoompasDetail(id)
             withContext(Dispatchers.Main) {
                 view?.showDetails(oompaLoompas)
