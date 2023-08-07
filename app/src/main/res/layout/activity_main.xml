@@ -23,6 +23,7 @@
             android:layout_marginBottom="4dp"
             android:paddingHorizontal="16dp"
             android:text="@string/pageTitle"
+            android:textAppearance="@style/TextMain"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -38,7 +39,8 @@
             tools:visibility="visible"
             android:src="@drawable/baseline_keyboard_arrow_left_24"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvPageInfo" />
+            app:layout_constraintStart_toEndOf="@+id/tvPageInfo"
+            app:tint="@color/purple_500" />
 
         <TextView
             android:id="@+id/tvCurrentPage"
@@ -47,6 +49,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:paddingHorizontal="16dp"
+            android:textAppearance="@style/TextMain"
             tools:text="1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,8 +65,87 @@
             android:contentDescription="@null"
             android:src="@drawable/baseline_keyboard_arrow_right_24"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tvCurrentPage" />
+            app:layout_constraintStart_toEndOf="@+id/tvCurrentPage"
+            app:tint="@color/purple_500"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeaderFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ababab"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clHeader">
+        <TextView
+            android:id="@+id/tvGenderFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="6dp"
+            android:text="@string/gender_filter"
+            android:textAppearance="@style/TextMain"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/etGenderFilter"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="6dp"
+            android:maxLength="1"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@color/purple_500"
+            android:inputType="textFilter"
+            android:autofillHints="name"
+            android:labelFor="@+id/tvGenderFilter"
+            android:hint="@null"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvGenderFilter"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/tvProfessionFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="2dp"
+            android:text="@string/profession_filter"
+            android:textAppearance="@style/TextMain"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etGenderFilter" />
+        <EditText
+            android:id="@+id/etProfessionFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:maxLength="8"
+            android:maxLines="1"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@color/purple_500"
+            android:inputType="textFilter"
+            android:autofillHints="name"
+            android:labelFor="@+id/tvProfessionFilter"
+            android:hint="@null"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvProfessionFilter"
+            app:layout_constraintEnd_toStartOf="@+id/btnLoadFilter"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/btnLoadFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etProfessionFilter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/button_background_color"
+            android:text="@string/loadFilter"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,15 +154,14 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clHeader"
+        app:layout_constraintTop_toBottomOf="@id/clHeaderFilter"
         app:layout_constraintBottom_toBottomOf="parent"
-
         >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

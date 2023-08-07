@@ -43,7 +43,8 @@
             tools:visibility="visible"
             android:src="@drawable/baseline_keyboard_arrow_left_24"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/purple_500"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

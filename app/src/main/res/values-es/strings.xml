@@ -10,7 +10,11 @@
     <string name="favorite_food">Comida favorita: %1$s</string>
     <string name="favorite_song">Letra de canción favorita:</string>
     <string name="gender">Género: %1$s</string>
+    <string name="gender_filter">Género:</string>
+    <string name="profession_filter">Profesión:</string>
     <string name="load_error">Error al cargar la lista</string>
     <string name="pageTitle">Página:</string>
     <string name="show">Mostrar</string>
+    <string name="no_results">No hay resultados</string>
+    <string name="loadFilter">Cargar Filtro</string>
 </resources>

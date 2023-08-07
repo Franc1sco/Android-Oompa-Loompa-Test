@@ -1,6 +1,7 @@
 package franug.oompaloompatest.presenter
 
 import android.app.Activity
+import franug.oompaloompatest.model.OompaLoompa
 import franug.oompaloompatest.presenter.interfaces.IMainListPresenter
 import franug.oompaloompatest.retrofit.RetrofitClient
 import franug.oompaloompatest.view.interfaces.IMainListActivity
@@ -31,5 +32,22 @@ class MainListPresenter : IMainListPresenter {
                 view?.showError()
             }
         }
+    }
+
+    override fun getFilteredList(
+        adapter: ArrayList<OompaLoompa>,
+        gender: String,
+        profession: String
+    ) {
+        val filteredList = ArrayList<OompaLoompa>()
+
+        for (oompaLoompa in adapter) {
+            if ((gender.isEmpty() || oompaLoompa.gender?.contains(gender, true) == true) &&
+                (profession.isEmpty() || oompaLoompa.profession?.contains(profession, true) == true)
+            ) {
+                filteredList.add(oompaLoompa)
+            }
+        }
+        view?.showFilteredList(filteredList.toTypedArray())
     }
 }

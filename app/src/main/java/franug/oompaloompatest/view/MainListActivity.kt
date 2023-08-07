@@ -2,6 +2,7 @@ package franug.oompaloompatest.view
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +40,7 @@ class MainListActivity : AppCompatActivity(), IMainListActivity {
         )
 
         setPageViews()
+        setupFilters()
         showLoadingScreen(true)
         lifecycleScope.launch(Dispatchers.IO) {
             presenter.getList(currentPage)
@@ -58,6 +60,18 @@ class MainListActivity : AppCompatActivity(), IMainListActivity {
         }
     }
 
+    private fun setupFilters() {
+        binding.btnLoadFilter.setOnClickListener {
+            showLoadingScreen(true)
+            val inputMethodManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val view: View? = this.currentFocus
+            // on below line hiding our keyboard.
+            inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+            presenter.getFilteredList(listDataAdapter, binding.etGenderFilter.text.toString(), binding.etProfessionFilter.text.toString())
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
@@ -66,10 +80,20 @@ class MainListActivity : AppCompatActivity(), IMainListActivity {
     override fun showList(loompaList: Array<OompaLoompa>) {
         listDataAdapter.clear()
         listDataAdapter.addAll(loompaList)
-        adapter = OompaLoompaAdapter(listDataAdapter, context = this)
+        setPageViews()
+        presenter.getFilteredList(listDataAdapter, binding.etGenderFilter.text.toString(), binding.etProfessionFilter.text.toString())
+    }
+
+    override fun showFilteredList(loompaList: Array<OompaLoompa>) {
+        val listFilteredData = ArrayList<OompaLoompa>()
+        listFilteredData.addAll(loompaList)
+        binding.recyclerView.setHasFixedSize(true)
+        adapter = OompaLoompaAdapter(listFilteredData, context = this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.scrollToPosition(0)
-        setPageViews()
+        if (listFilteredData.size == 0) {
+            Toast.makeText(this, getString(R.string.no_results), Toast.LENGTH_SHORT).show()
+        }
         showLoadingScreen(false)
     }
 
@@ -89,10 +113,12 @@ class MainListActivity : AppCompatActivity(), IMainListActivity {
             binding.progressBar.visibility = View.VISIBLE
             binding.clHeader.visibility = View.GONE
             binding.clContent.visibility = View.GONE
+            binding.clHeaderFilter.visibility = View.GONE
         } else {
             binding.progressBar.visibility = View.GONE
             binding.clHeader.visibility = View.VISIBLE
             binding.clContent.visibility = View.VISIBLE
+            binding.clHeaderFilter.visibility = View.VISIBLE
         }
     }
 

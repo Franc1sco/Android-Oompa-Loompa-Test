@@ -9,7 +9,11 @@
     <string name="favorite_food">Favorite food: %1$s</string>
     <string name="favorite_song">Favorite song lyrics:</string>
     <string name="gender">Gender: %1$s</string>
+    <string name="gender_filter">Gender:</string>
+    <string name="profession_filter">Profession:</string>
     <string name="load_error">Error on loading the list</string>
     <string name="pageTitle">Page:</string>
     <string name="show">Show</string>
+    <string name="no_results">No results</string>
+    <string name="loadFilter">Load Filter</string>
 </resources>
