@@ -122,7 +122,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
-            android:maxLength="8"
+            android:maxLength="16"
             android:maxLines="1"
             android:backgroundTint="@color/purple_500"
             android:textColor="@color/purple_500"
@@ -133,19 +133,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvProfessionFilter"
-            app:layout_constraintEnd_toStartOf="@+id/btnLoadFilter"
-            android:text=""/>
-
-        <Button
-            android:id="@+id/btnLoadFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/etProfessionFilter"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/button_background_color"
-            android:text="@string/loadFilter"/>
+            android:text=""/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -17,12 +17,11 @@ import org.mockito.Mockito.verify
 class DetailPresenterTest {
     private var mockView = mock(DetailActivity::class.java)
 
-    private lateinit var presenter: DetailPresenter
+    private var presenter = DetailPresenter()
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        presenter = DetailPresenter()
         presenter.attachView(mockView)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }

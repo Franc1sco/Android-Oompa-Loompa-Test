@@ -2,9 +2,9 @@ package franug.oompaloompatest.view
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import franug.oompaloompatest.R
@@ -61,13 +61,10 @@ class MainListActivity : AppCompatActivity(), IMainListActivity {
     }
 
     private fun setupFilters() {
-        binding.btnLoadFilter.setOnClickListener {
-            showLoadingScreen(true)
-            val inputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            val view: View? = this.currentFocus
-            // on below line hiding our keyboard.
-            inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+        binding.etGenderFilter.addTextChangedListener {
+            presenter.getFilteredList(listDataAdapter, binding.etGenderFilter.text.toString(), binding.etProfessionFilter.text.toString())
+        }
+        binding.etProfessionFilter.addTextChangedListener {
             presenter.getFilteredList(listDataAdapter, binding.etGenderFilter.text.toString(), binding.etProfessionFilter.text.toString())
         }
     }
